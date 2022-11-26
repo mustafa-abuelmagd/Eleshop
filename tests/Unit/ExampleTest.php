@@ -2,6 +2,8 @@
 
 namespace Tests\Unit;
 
+use App\Models\Supplier;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\TestCase;
 
 class ExampleTest extends TestCase
@@ -11,8 +13,13 @@ class ExampleTest extends TestCase
      *
      * @return void
      */
-    public function test_that_true_is_true()
+    use RefreshDatabase;
+
+    public function test_that_can_create_an_order()
     {
-        $this->assertTrue(true);
+        $supplier = new Supplier();
+        $boolean_result = !$supplier->name;
+        $this->assertTrue($boolean_result);
+
     }
 }

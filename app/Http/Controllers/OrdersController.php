@@ -42,8 +42,10 @@ class OrdersController extends Controller
     public function store(StoreOrdersRequest $request)
     {
         $order_data = Order::create(
-            $request->validated() +['status' => Order::SHIPPED] ,
+            $request->validated() ,
         );
+        $order_data->status = Order::SHIPPED;
+
         $default_date= 0;
         foreach ($request->order_items as $order_item) {
             $order_item = OrderItem::create($order_item + ['order_id' => $order_data->id]);
