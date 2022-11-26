@@ -12,33 +12,14 @@ use Carbon\Carbon;
 
 class OrdersEstimatedDateController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
-     */
+
     public function index()
     {
         $orders = OrderEstimatedDates::all();
         return OrderEstimatedDateResource::collection($orders);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param \App\Http\Requests\StoreOrdersEstimatedDateRequest $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
     public function store(StoreOrdersEstimatedDateRequest $request, $id)
     {
         $order = Order::findOrFail($id);
@@ -52,11 +33,20 @@ class OrdersEstimatedDateController extends Controller
             $order->save();
         } elseif ($phase == OrderEstimatedDates::DELIVERED) {
             $order->status = Order::DELIVERED;
-            $start_time = Carbon::parse($order->initial_date);
-            $finish_time = Carbon::now();
+            $start_time = Carbon::parse($order->orderHistory->where('phase' , OrderEstimatedDates::CONFIRMED)->first()->estimated_date
+//            initial_date
+            );
+            $finish_time = Carbon::parse($request->estimated_date);
             $result = $start_time->diffInDays($finish_time, false);
             $order->delay = $result;
             $order->save();
+
+            $supplier = $order->supplier;
+
+            $orders = $supplier->orders()->where('status', Order::DELIVERED)->get();
+            $performance = count($orders) > 0 ? array_sum($orders->pluck('delay')->toArray()) / count($orders) : 0;
+            $supplier->performance = $performance;
+            $supplier->save();
         }
 
 
@@ -69,48 +59,10 @@ class OrdersEstimatedDateController extends Controller
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param \App\Models\OrderEstimatedDates $ordersEstimatedDate
-     * @return \Illuminate\Http\Response
-     */
-    public function show(OrderEstimatedDates $ordersEstimatedDate)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param \App\Models\OrderEstimatedDates $ordersEstimatedDate
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(OrderEstimatedDates $ordersEstimatedDate)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param \App\Http\Requests\UpdateOrdersEstimatedDateRequest $request
-     * @param \App\Models\OrderEstimatedDates $ordersEstimatedDate
-     * @return \Illuminate\Http\Response
-     */
     public function update(UpdateOrdersEstimatedDateRequest $request, OrderEstimatedDates $ordersEstimatedDate)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param \App\Models\OrderEstimatedDates $ordersEstimatedDate
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(OrderEstimatedDates $ordersEstimatedDate)
-    {
-        //
-    }
 }

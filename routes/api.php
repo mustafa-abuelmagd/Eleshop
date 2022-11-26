@@ -25,9 +25,9 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
-Route::resource('Suppliers', SupplierController::class);
-Route::resource('MenuItems', MenuItemsController::class);
-Route::resource('SupplierItems', SupplierItemsController::class);
-Route::resource('Orders', OrdersController::class);
-Route::resource('OrdersEstimatedDates/{id}', OrdersEstimatedDateController::class);
-Route::resource('Orders/{id}/OrdersEstimatedDates', OrdersEstimatedDateController::class);
+Route::resource('Suppliers', SupplierController::class)->only(['index' , 'store', 'show']);
+Route::resource('MenuItems', MenuItemsController::class)->only(['index' , 'store', 'show']);
+Route::resource('SupplierItems', SupplierItemsController::class)->only(['index' , 'store', 'update' , 'show']);
+Route::resource('Orders', OrdersController::class)->only(['index' , 'store', 'update' , 'show']);
+Route::resource('OrdersEstimatedDates/{id}', OrdersEstimatedDateController::class)->only(['index' , 'store', 'update']);
+Route::resource('Orders/{id}/OrdersEstimatedDates', OrdersEstimatedDateController::class)->only(['index' , 'store', 'update']);

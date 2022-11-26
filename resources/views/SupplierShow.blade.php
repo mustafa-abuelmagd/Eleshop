@@ -1,14 +1,43 @@
 @extends('Layout')
 @section('content')
-    <h3> Supplier name: {{$supplier->name }} {{$supplier->performance}}</h3>
-    @forelse($supplier->orders as $order)
+    <table style="width:100%">
+        <tr>
+            <th>Supplier name</th>
+            <th>Supplier performance</th>
 
-            <a href="{{route('Orders.show' , ['Order'=>$order->id])}}">
-            <h3> {{$order->id }} {{$order->total_price }}  {{$order->status}} {{$order->delay}} {{count($supplier->orders) > 0 ? array_sum($supplier->orders->pluck('delay')->toArray()) / count($supplier->orders) : 0}}</h3>
-           </a>
+        </tr>
+        <tr>
 
-    @empty
-        <p> This Supplier doesn't have order history</p>
-    @endforelse
+            <td>{{$supplier->name }}</td>
+            <td>{{$supplier->performance}}</td>
+        </tr>
+    </table>
+
+    </br>
+    </br>
+    </br>
+
+
+    <table style="width:100%">
+        <tr>
+            <th>ID</th>
+            <th>Total price</th>
+            <th>Status</th>
+            <th>Delay</th>
+        </tr>
+        @forelse($supplier->orders as $order)
+            <tr>
+                <td><a href="{{route('Orders.show' , ['Order'=>$order->id])}}">
+                        {{$order->id }}
+                    </a></td>
+                <td>{{$order->total_price }}</td>
+                <td>{{$order->status}}</td>
+                <td>{{$order->delay}}</td>
+            </tr>
+
+        @empty
+            <p> This Supplier doesn't have order history</p>
+        @endforelse
+    </table>
 
 @endsection

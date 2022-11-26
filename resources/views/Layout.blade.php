@@ -19,6 +19,11 @@
             font-family: 'Nunito', sans-serif;
         }
     </style>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+        }
+    </style>
 </head>
 <body class="antialiased">
 
