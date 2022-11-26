@@ -37,7 +37,7 @@ class OrdersEstimatedDateController extends Controller
      * Store a newly created resource in storage.
      *
      * @param \App\Http\Requests\StoreOrdersEstimatedDateRequest $request
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(StoreOrdersEstimatedDateRequest $request, $id)
     {
@@ -60,11 +60,12 @@ class OrdersEstimatedDateController extends Controller
         }
 
 
-        return response()->json([
-            'status' => 'success',
-            'data' => OrderEstimatedDateResource::make($order_estimated_dates),
-            'order' => OrderResource::make($order)
-        ]);
+        return redirect()->route('Orders.show', ['Order' => $id]);
+//            response()->json([
+//            'status' => 'success',
+//            'data' => OrderEstimatedDateResource::make($order_estimated_dates),
+//            'order' => OrderResource::make($order)
+//        ]);
 
     }
 

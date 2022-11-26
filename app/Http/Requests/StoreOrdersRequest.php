@@ -25,7 +25,6 @@ class StoreOrdersRequest extends FormRequest
     {
 //        dd($this);
         return [
-            'menu_item_id' => 'required|exists:menu_items,id',
             'supplier_id' => 'required|exists:suppliers,id',
             'total_price' => 'required|numeric|gt:0',
             'initial_date' => 'nullable|date|after:tomorrow',

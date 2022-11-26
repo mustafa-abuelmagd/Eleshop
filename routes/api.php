@@ -1,5 +1,12 @@
 <?php
 
+//use App\Http\Controllers\OrdersEstimatedDateController;
+use App\Http\Controllers\{SupplierController,
+    MenuItemsController,
+    SupplierItemsController,
+    OrdersController,
+    OrdersEstimatedDateController
+};
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,8 +25,9 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 
-Route::resource('Suppliers', \App\Http\Controllers\SupplierController::class);
-Route::resource('MenuItems', \App\Http\Controllers\MenuItemsController::class);
-Route::resource('SupplierItems', \App\Http\Controllers\SupplierItemsController::class);
-Route::resource('Orders', \App\Http\Controllers\OrdersController::class);
-Route::resource('OrdersEstimatedDate/{id}', \App\Http\Controllers\OrdersEstimatedDateController::class);
+Route::resource('Suppliers', SupplierController::class);
+Route::resource('MenuItems', MenuItemsController::class);
+Route::resource('SupplierItems', SupplierItemsController::class);
+Route::resource('Orders', OrdersController::class);
+Route::resource('OrdersEstimatedDates/{id}', OrdersEstimatedDateController::class);
+Route::resource('Orders/{id}/OrdersEstimatedDates', OrdersEstimatedDateController::class);

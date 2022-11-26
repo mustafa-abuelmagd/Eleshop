@@ -15,12 +15,16 @@ class SupplierResource extends JsonResource
      */
     public function toArray($request)
     {
+
         $orders = $this->orders()->where('status', Order::DELIVERED)->get();
         $performance = count($orders) > 0 ? array_sum($orders->pluck('delay')->toArray()) / count($orders) : 0;
+//        dd($this->orderHistory);
+
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'performance' => $performance,
-            'history' => OrderEstimatedDateResource::make($this->orderHistory),
+            'history' => OrderEstimatedDateResource::collection($this->orderHistory),
             'orders' => $this->orders,
             'created_at' => $this->created_at,
 

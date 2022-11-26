@@ -9,15 +9,18 @@ use App\Models\Supplier;
 
 class SupplierController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+//    /**
+//     * Display a listing of the resource.
+//     *
+//     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+//     */
     public function index()
     {
         $suppliers = Supplier::all();
-        return SupplierResource::collection($suppliers);
+        return view('Suppliers' , [
+            'suppliers' => $suppliers
+        ]);
+//        return SupplierResource::collection($suppliers);
     }
 
     /**
@@ -33,7 +36,7 @@ class SupplierController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreSupplierRequest  $request
+     * @param \App\Http\Requests\StoreSupplierRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
     public function store(StoreSupplierRequest $request)
@@ -41,9 +44,9 @@ class SupplierController extends Controller
         $supplier = Supplier::create(
             $request->validated(),
         );
-
+//        dd($supplier);
         return response()->json([
-            'status'=> 'success',
+            'status' => 'success',
             'data' => SupplierResource::make($supplier)
         ]);
 
@@ -52,22 +55,26 @@ class SupplierController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Supplier  $supplier
-     * @return \Illuminate\Http\JsonResponse
+     * @param \App\Models\Supplier $supplier
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
     public function show($id)
     {
         $supplier = Supplier::findOrFail($id);
-        return response()->json([
-            'status'=> 'success',
-            'data' => SupplierResource::make($supplier)
+        return view('SupplierShow' , [
+            'supplier' => $supplier
         ]);
+
+//        return response()->json([
+//            'status' => 'success',
+//            'data' => SupplierResource::make($supplier)
+//        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Supplier  $supplier
+     * @param \App\Models\Supplier $supplier
      * @return \Illuminate\Http\Response
      */
     public function edit(Supplier $supplier)
@@ -78,8 +85,8 @@ class SupplierController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateSupplierRequest  $request
-     * @param  \App\Models\Supplier  $supplier
+     * @param \App\Http\Requests\UpdateSupplierRequest $request
+     * @param \App\Models\Supplier $supplier
      * @return \Illuminate\Http\Response
      */
     public function update(UpdateSupplierRequest $request, Supplier $supplier)
@@ -90,7 +97,7 @@ class SupplierController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Supplier  $supplier
+     * @param \App\Models\Supplier $supplier
      * @return \Illuminate\Http\Response
      */
     public function destroy(Supplier $supplier)

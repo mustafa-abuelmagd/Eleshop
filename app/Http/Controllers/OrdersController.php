@@ -70,11 +70,14 @@ class OrdersController extends Controller
      * Display the specified resource.
      *
      * @param \App\Models\Order $orders
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View
      */
-    public function show(Order $orders)
+    public function show($id)
     {
-        //
+        $order = Order::findOrFail($id);
+        return view('OrderShow' , [
+            'order' => $order
+        ]);
     }
 
     /**
